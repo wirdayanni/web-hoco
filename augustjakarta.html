@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hoco Coffee</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="font-sans bg-white text-black">
+
+  <!-- Navbar -->
+  <header class="fixed top-0 left-0 w-full flex justify-between items-center px-8 py-6 z-50 bg-white/80 backdrop-blur">
+    <h1 class="text-xl font-semibold tracking-wide">HOCO</h1>
+    <nav>
+      <ul class="flex gap-8 text-sm uppercase">
+        <li><a href="#about" class="hover:opacity-70">About</a></li>
+        <li><a href="#menu" class="hover:opacity-70">Menu</a></li>
+        <li><a href="#reservation" class="hover:opacity-70">Reservation</a></li>
+        <li><a href="#contact" class="hover:opacity-70">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="h-screen flex items-center justify-center bg-[url('https://images.unsplash.com/photo-1504674900247-0877df9cc836')] bg-cover bg-center">
+    <div class="bg-black/50 text-white p-12 rounded-2xl text-center">
+      <h2 class="text-5xl md:text-6xl font-bold mb-4">A Modern Dining Experience</h2>
+      <p class="text-lg tracking-wide">Crafted with passion in Aceh</p>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="min-h-screen flex flex-col items-center justify-center px-6 py-24 text-center">
+    <h2 class="text-4xl md:text-5xl font-semibold mb-6">About Us</h2>
+    <p class="max-w-2xl text-lg leading-relaxed">
+      August Jakarta presents a refined dining experience, blending modern culinary techniques with Indonesian heritage. 
+      We believe in simplicity, elegance, and unforgettable flavors.
+    </p>
+  </section>
+
+  <!-- Menu Section -->
+  <section id="menu" class="min-h-screen px-6 py-24 bg-neutral-100">
+    <h2 class="text-4xl md:text-5xl font-semibold text-center mb-12">Our Menu</h2>
+    <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+      <div class="p-6 bg-white rounded-xl shadow text-center">
+        <h3 class="text-xl font-medium mb-2">Signature Dish</h3>
+        <p class="text-gray-600">A modern twist on classic Indonesian flavors.</p>
+      </div>
+      <div class="p-6 bg-white rounded-xl shadow text-center">
+        <h3 class="text-xl font-medium mb-2">Tasting Menu</h3>
+        <p class="text-gray-600">Curated seasonal ingredients in a multi-course journey.</p>
+      </div>
+      <div class="p-6 bg-white rounded-xl shadow text-center">
+        <h3 class="text-xl font-medium mb-2">Wine Pairing</h3>
+        <p class="text-gray-600">Exclusive selection of wines from around the world.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reservation Section -->
+  <section id="reservation" class="min-h-screen flex flex-col items-center justify-center px-6 py-24 text-center">
+    <h2 class="text-4xl md:text-5xl font-semibold mb-6">Reservation</h2>
+    <p class="mb-8 max-w-xl">
+      Reserve your table and enjoy a fine dining experience with us. We recommend booking in advance.
+    </p>
+    <a
+      href="mailto:reservation@augustjakarta.com"
+      class="px-8 py-3 bg-black text-white rounded-full hover:bg-gray-800 transition"
+    >
+      Book Now
+    </a>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="min-h-screen px-6 py-24 bg-neutral-100 flex flex-col items-center justify-center text-center">
+    <h2 class="text-4xl md:text-5xl font-semibold mb-6">Contact Us</h2>
+    <p class="mb-4">Jl. Example No. 123, Jakarta</p>
+    <p class="mb-4">Phone: +62 812-3456-7890</p>
+    <p class="mb-4">Email: hello@augustjakarta.com</p>
+    <div class="flex gap-6 mt-6">
+      <a href="#" class="hover:opacity-70">Instagram</a>
+      <a href="#" class="hover:opacity-70">Facebook</a>
+      <a href="#" class="hover:opacity-70">Google Maps</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-8 text-center text-sm text-gray-500">
+    &copy; <script>document.write(new Date().getFullYear())</script> August Jakarta. All rights reserved.
+  </footer>
+
+</body>
+</html>
