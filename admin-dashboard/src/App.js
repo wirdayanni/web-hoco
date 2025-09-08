@@ -3,7 +3,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import MenuManagement from "./features/menu/MenuManagement";
 import ReservasiManagement from "./pages/ReservasiManagement";
-import EventManagement from "./pages/EventManagement";
+import EventManagement from "./features/event/EventManagement";
 import AdminLayout from "./layouts/AdminLayout";
 
 export default function App() {
