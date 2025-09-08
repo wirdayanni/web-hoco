@@ -1,14 +1,27 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 export default function Sidebar() {
+  const linkClass = ({ isActive }) =>
+    `block px-2 py-1 rounded transition ${
+      isActive ? "bg-green-700 text-white font-semibold" : "hover:text-green-300"
+    }`;
+
   return (
     <aside className="w-64 h-screen bg-green-900 text-white p-6 space-y-6">
       <h2 className="text-xl font-bold">Admin Panel</h2>
-      <nav className="flex flex-col space-y-4">
-        <Link to="/admin/dashboard" className="hover:text-green-300">Dashboard</Link>
-        <Link to="/admin/menu" className="hover:text-green-300">Manajemen Menu</Link>
-        <Link to="/admin/reservasi" className="hover:text-green-300">Manajemen Reservasi</Link>
-        <Link to="/admin/event" className="hover:text-green-300">Manajemen Event</Link>
+      <nav className="flex flex-col space-y-2">
+        <NavLink to="/admin/dashboard" className={linkClass}>
+          Dashboard
+        </NavLink>
+        <NavLink to="/admin/menu" className={linkClass}>
+          Manajemen Menu
+        </NavLink>
+        <NavLink to="/admin/reservasi" className={linkClass}>
+          Manajemen Reservasi
+        </NavLink>
+        <NavLink to="/admin/event" className={linkClass}>
+          Manajemen Event
+        </NavLink>
       </nav>
     </aside>
   );
