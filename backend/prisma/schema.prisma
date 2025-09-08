@@ -27,3 +27,32 @@ model Menu {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+model Event {
+  id               Int          @id @default(autoincrement())
+  title            String
+  shortDescription String       @db.VarChar(255)
+  description      String       @db.Text
+  date             DateTime
+  image            String?      // optional legacy cover (boleh tetap ada)
+  status           Boolean      @default(true)
+  location         Location?    @relation(fields: [locationId], references: [id])
+  locationId       Int?
+  images           EventImage[] // relation ke banyak gambar
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+}
+
+model EventImage {
+  id      Int    @id @default(autoincrement())
+  url     String
+  event   Event  @relation(fields: [eventId], references: [id])
+  eventId Int
+}
+
+model Location {
+  id      Int     @id @default(autoincrement())
+  name    String
+  address String?
+  events  Event[]
+}
