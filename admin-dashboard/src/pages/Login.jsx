@@ -8,7 +8,7 @@ export default function Login() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (username === "admin" && password === "1234") {
+    if (username === "admin" && password === "admin1234") {
       navigate("/dashboard");
     } else {
       alert("Username atau password salah!");
