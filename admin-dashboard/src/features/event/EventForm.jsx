@@ -1,114 +1,109 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-export default function EventForm({ eventId }) {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [date, setDate] = useState("");
-  const [locationId, setLocationId] = useState("");
+export default function EventForm({ eventData, onCancel, onSaved }) {
+  const [title, setTitle] = useState(eventData?.title || "");
+  const [shortDescription, setShortDescription] = useState(eventData?.shortDescription || "");
+  const [description, setDescription] = useState(eventData?.description || "");
+  const [date, setDate] = useState(eventData ? eventData.date.split("T")[0] : "");
+  const [locationId, setLocationId] = useState(eventData?.location?.id || "");
+  const [files, setFiles] = useState([]);
   const [locations, setLocations] = useState([]);
-  const [existingImages, setExistingImages] = useState([]);
-  const [newImages, setNewImages] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [existingImages, setExistingImages] = useState(eventData?.images || []);
 
-  // Fetch locations & event data
   useEffect(() => {
-    const fetchLocations = async () => {
-      try {
-        const res = await axios.get("http://localhost:5000/api/locations");
-        setLocations(res.data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    const fetchEvent = async () => {
-      if (!eventId) {
-        setLoading(false);
-        return;
-      }
-      try {
-        const res = await axios.get(`http://localhost:5000/api/events/${eventId}`);
-        const evt = res.data;
-        setTitle(evt.title || "");
-        setDescription(evt.description || "");
-        setDate(evt.date ? evt.date.split("T")[0] : "");
-        setLocationId(evt.locationId || "");
-        setExistingImages(evt.images || []);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchLocations();
-    fetchEvent();
-  }, [eventId]);
+  }, []);
 
-  const handleImageChange = (e) => {
-    setNewImages([...newImages, ...e.target.files]);
-  };
-
-  const handleRemoveExistingImage = (imageId) => {
-    setExistingImages(existingImages.filter(img => img.id !== imageId));
+  const fetchLocations = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/api/locations");
+      setLocations(res.data);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const formData = new FormData();
     formData.append("title", title);
+    formData.append("shortDescription", shortDescription);
     formData.append("description", description);
     formData.append("date", date);
     formData.append("locationId", locationId);
 
-    // Tambahkan gambar baru
-    newImages.forEach((img) => formData.append("images", img));
+    // gambar baru
+    for (let i = 0; i < files.length; i++) {
+      formData.append("images", files[i]);
+    }
 
-    // Kirim daftar gambar lama yang ingin dipertahankan
-    formData.append(
-      "existingImageIds",
-      existingImages.map(img => img.id)
-    );
+    // gambar lama yang masih dipertahankan
+    const existingIds = existingImages.map((img) => img.id);
+    formData.append("existingImageIds", JSON.stringify(existingIds));
 
     try {
-      if (eventId) {
-        await axios.put(`http://localhost:5000/api/events/${eventId}`, formData, {
+      if (eventData) {
+        // Edit
+        await axios.put(`http://localhost:5000/api/events/${eventData.id}`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
       } else {
+        // Add
         await axios.post("http://localhost:5000/api/events", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
       }
-      alert("Event berhasil disimpan!");
+      onSaved();
     } catch (err) {
       console.error(err);
-      alert("Gagal menyimpan event.");
+      alert("Gagal menyimpan event");
     }
   };
 
-  if (loading) return <p className="p-6 text-gray-600">Loading...</p>;
+  const handleFilesChange = (e) => {
+    setFiles(e.target.files);
+  };
+
+  const handleRemoveExistingImage = (id) => {
+    setExistingImages(existingImages.filter((img) => img.id !== id));
+  };
 
   return (
-    <form onSubmit={handleSubmit} className="p-6 space-y-4">
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-4 p-4 border rounded bg-white shadow"
+    >
+      <h2 className="text-lg font-bold">
+        {eventData ? "Edit Event" : "Tambah Event"}
+      </h2>
+
       <input
         type="text"
+        placeholder="Judul"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        placeholder="Judul Event"
         className="w-full border p-2 rounded"
         required
       />
+
+      <input
+        type="text"
+        placeholder="Short Description"
+        value={shortDescription}
+        onChange={(e) => setShortDescription(e.target.value)}
+        className="w-full border p-2 rounded"
+        required
+      />
+
       <textarea
+        placeholder="Deskripsi lengkap"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
-        placeholder="Deskripsi Event"
         className="w-full border p-2 rounded"
-        rows={6}
-        required
-      />
+        rows="5"
+      ></textarea>
+
       <input
         type="date"
         value={date}
@@ -116,6 +111,8 @@ export default function EventForm({ eventId }) {
         className="w-full border p-2 rounded"
         required
       />
+
+      {/* Lokasi dropdown */}
       <select
         value={locationId}
         onChange={(e) => setLocationId(e.target.value)}
@@ -124,42 +121,57 @@ export default function EventForm({ eventId }) {
       >
         <option value="">Pilih Lokasi</option>
         {locations.map((loc) => (
-          <option key={loc.id} value={loc.id}>{loc.name}</option>
+          <option key={loc.id} value={loc.id}>
+            {loc.name}
+          </option>
         ))}
       </select>
 
-      <div>
-        <label className="block mb-1 font-medium">Gambar Baru</label>
-        <input type="file" multiple onChange={handleImageChange} />
-      </div>
+      {/* Upload gambar baru */}
+      <input
+        type="file"
+        multiple
+        onChange={handleFilesChange}
+        className="w-full"
+      />
 
+      {/* Preview gambar existing */}
       {existingImages.length > 0 && (
-        <div className="flex flex-wrap gap-2 mt-2">
+        <div className="flex gap-2 flex-wrap">
           {existingImages.map((img) => (
-            <div key={img.id} className="relative w-32 h-40">
+            <div key={img.id} className="relative">
               <img
                 src={`http://localhost:5000${img.url}`}
-                alt="existing"
-                className="w-full h-full object-cover rounded"
+                alt=""
+                className="h-20 w-20 object-cover border rounded"
               />
               <button
                 type="button"
                 onClick={() => handleRemoveExistingImage(img.id)}
-                className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                className="absolute top-0 right-0 bg-red-600 text-white text-xs px-1 rounded"
               >
-                ×
+                X
               </button>
             </div>
           ))}
         </div>
       )}
 
-      <button
-        type="submit"
-        className="bg-green-800 text-white px-4 py-2 rounded hover:bg-green-700"
-      >
-        Simpan Event
-      </button>
+      <div className="flex gap-2">
+        <button
+          type="submit"
+          className="bg-green-700 text-white px-4 py-2 rounded"
+        >
+          Simpan
+        </button>
+        <button
+          type="button"
+          onClick={onCancel}
+          className="bg-gray-500 text-white px-4 py-2 rounded"
+        >
+          Batal
+        </button>
+      </div>
     </form>
   );
 }
