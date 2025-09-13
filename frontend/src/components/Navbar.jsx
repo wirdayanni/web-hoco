@@ -17,7 +17,7 @@ export default function Navbar() {
     {/* Buttons */}
     <div className="flex items-center space-x-4">
       <Link
-        to="/reservasi"
+        to="/reservation"
         className="bg-green-800 text-white px-4 py-2 rounded-full hover:bg-green-700 transition"
       >
         Reservation
@@ -40,7 +40,7 @@ export default function Navbar() {
       >
         &times;
       </button>
-      <Link to="/reservasi" onClick={() => setIsOpen(false)}>Reservasi</Link>
+      <Link to="/reservation" onClick={() => setIsOpen(false)}>Reservasi</Link>
       <Link to="/about" onClick={() => setIsOpen(false)}>About Us</Link>
       <Link to="/menu" onClick={() => setIsOpen(false)}>Our Menu</Link>
       <Link to="/events" onClick={() => setIsOpen(false)}>Event & Partnership</Link>
