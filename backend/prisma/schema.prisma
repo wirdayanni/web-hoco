@@ -56,3 +56,20 @@ model Location {
   address String?
   events  Event[]
 }
+
+model Reservation {
+  id          Int      @id @default(autoincrement())
+  code        String   @unique
+  branch      String
+  type        String   
+  room        String
+  date        DateTime
+  time        String   
+  people      Int
+  eventName   String?  
+  notes       String?
+  name        String
+  phone       String
+  status      String   @default("pending")
+  createdAt   DateTime @default(now())
+}

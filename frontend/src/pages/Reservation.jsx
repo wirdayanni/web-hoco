@@ -1,4 +1,5 @@
 import TimePicker from "../components/reservation/TimePicker";
+import axios from "axios";
 import { useState } from "react";
 
 export default function Reservation() {
@@ -360,27 +361,41 @@ export default function Reservation() {
           </div>
         )}
 
-        {/* STEP 3 */}
-        {step === 3 && (
-          <div className="space-y-4">
-            <h2 className="text-lg font-bold">Review Reservasi</h2>
-            <ReviewList />
-            <div className="flex justify-between mt-4">
-              <button
-                onClick={() => setStep(2)}
-                className="px-4 py-2 bg-gray-300 rounded-lg"
-              >
-                Kembali
-              </button>
-              <button
-                onClick={() => setStep(4)}
-                className="px-4 py-2 bg-green-500 text-white rounded-lg"
-              >
-                Konfirmasi Reservasi
-              </button>
-            </div>
-          </div>
-        )}
+{/* STEP 3 */}
+{step === 3 && (
+  <div className="space-y-4">
+    <h2 className="text-lg font-bold">Review Reservasi</h2>
+    <ReviewList />
+    <div className="flex justify-between mt-4">
+      <button
+        onClick={() => setStep(2)}
+        className="px-4 py-2 bg-gray-300 rounded-lg"
+      >
+        Kembali
+      </button>
+      <button
+        onClick={async () => {
+          try {
+            const res = await axios.post("http://localhost:5000/api/reservations", {
+              ...formData,
+              people: parseInt(formData.people, 10),
+              date: new Date(formData.date), // biar sesuai Prisma DateTime
+            });
+            console.log("Reservasi berhasil:", res.data);
+            setStep(4);
+          } catch (err) {
+            console.error("Gagal kirim reservasi:", err.response?.data || err.message);
+            alert("Reservasi gagal. Coba lagi.");
+          }
+        }}
+        className="px-4 py-2 bg-green-500 text-white rounded-lg"
+      >
+        Konfirmasi Reservasi
+      </button>
+    </div>
+  </div>
+)}
+
 
         {/* STEP 4 */}
         {step === 4 && (

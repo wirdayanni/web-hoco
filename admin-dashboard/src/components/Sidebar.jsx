@@ -16,7 +16,7 @@ export default function Sidebar() {
         <NavLink to="/admin/menu" className={linkClass}>
           Manajemen Menu
         </NavLink>
-        <NavLink to="/admin/reservasi" className={linkClass}>
+        <NavLink to="/admin/reservations" className={linkClass}>
           Manajemen Reservasi
         </NavLink>
         <NavLink to="/admin/event" className={linkClass}>
