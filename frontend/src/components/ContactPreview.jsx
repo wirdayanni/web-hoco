@@ -5,28 +5,28 @@ export default function ContactPreview() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
         {[
           {
+            name: "Hoco Coffee Lampineung",
+            address: "Jl. Malikul Saleh No.7, Kota Banda Aceh",
+            img: "/outlet1.png",
+            wa: "http://wa.me/6282288219464", // WhatsApp Lampineung
+            gofood: "https://gofood.link/a/MdJZjUY",
+            grabfood: "https://r.grab.com/g/6-20250915_114342_a4b79e827fb247e98e9b58389b0fa258_MEXMPS-6-CZBGBFCYCP5VAN",
+          },
+          {
             name: "Hoco Coffee Lambhuk",
             address: "Jl. Seulanga, Lambhuk, Kota Banda Aceh",
             img: "/outlet1.png",
-            wa: "https://wa.me/6281264065722", // WhatsApp Lambhuk
-            gofood: "https://gofood.link/lambhuk", // GoFood Lambhuk
-            grabfood: "https://grab.link/lambhuk", // GrabFood Lambhuk
+            wa: "https://wa.me/6281264065722", 
+            gofood: "https://gofood.link/a/Mm6RDiW",
+            grabfood: "https://r.grab.com/g/6-20250915_113837_a4b79e827fb247e98e9b58389b0fa258_MEXMPS-6-C4JKNPDCTFBUKA", // GrabFood Lambhuk
           },
           {
             name: "Hoco Coffee Lamteumen",
             address: "Jl. Cut Nyak Dhien, Lamteumen, Kota Banda Aceh",
             img: "/outlet1.png",
             wa: "https://wa.me/6282375001114", // WhatsApp Lamteumen
-            gofood: "https://gofood.link/lamteumen",
-            grabfood: "https://grab.link/lamteumen",
-          },
-          {
-            name: "Hoco Coffee Lampineung",
-            address: "Jl. Malikul Saleh No.7, Kota Banda Aceh",
-            img: "/outlet1.png",
-            wa: "http://wa.me/6282288219464", // WhatsApp Lampineung
-            gofood: "https://gofood.link/lampineung",
-            grabfood: "https://grab.link/lampineung",
+            gofood: "https://gofood.link/a/MmcDACy",
+            grabfood: "https://r.grab.com/g/6-20250915_114046_a4b79e827fb247e98e9b58389b0fa258_MEXMPS-6-C6TGCBNEBATXLT",
           },
         ].map((outlet, i) => (
           <div
