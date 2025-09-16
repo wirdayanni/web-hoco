@@ -38,8 +38,8 @@ export default function EventList() {
     .sort((a, b) => new Date(b.date) - new Date(a.date));
 
   return (
-    <div className="p-6 space-y-10">
-      <h1 className="text-2xl font-bold text-green-800">Event HOCO Coffee</h1>
+    <div className="py-28 px-8 space-y-10">
+      <h1 className="text-2xl font-bold text-green-800 text-center">Our Events</h1>
 
       {/* Event Akan Datang */}
       <section>
@@ -47,7 +47,7 @@ export default function EventList() {
           Upcoming Events
         </h2>
         {upcomingEvents.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {upcomingEvents.map((event) => (
               <Link
                 key={event.id}
@@ -55,7 +55,7 @@ export default function EventList() {
                 className="border rounded-lg overflow-hidden shadow hover:shadow-lg transition bg-white"
               >
                 {event.images[0] && (
-                  <div className="w-full aspect-[3/4] overflow-hidden">
+                  <div className="w-full max-h-72 overflow-hidden">
                     <img
                       src={`http://localhost:5000${event.images[0].url}`}
                       alt={event.title}
@@ -83,11 +83,11 @@ export default function EventList() {
 
       {/* Event Sudah Berlalu */}
       <section>
-        <h2 className="text-xl font-bold text-gray-700 mb-4">
+        <h2 className="text-xl font-bold text-green-800 mb-4">
           Past Events
         </h2>
         {pastEvents.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {pastEvents.map((event) => (
               <Link
                 key={event.id}
