@@ -1,47 +1,70 @@
-export default function ContactPreview() {
+export default function Contact() {
+  const outlets = [
+    {
+      name: "Hoco Coffee Lampineung",
+      address: "Jl. Malikul Saleh No.7, Kota Banda Aceh",
+      mapEmbedSrc:
+        "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3971.027013743362!2d95.34451469999999!3d5.5630141!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x304037bf0ea09d27%3A0xe531ddafd0545eb6!2sHoco%20Coffee%20Lampineung!5e0!3m2!1sid!2sid!4v1757990526281!5m2!1sid!2sid",
+      wa: "http://wa.me/6282288219464",
+      gofood: "https://gofood.link/a/MdJZjUY",
+      grabfood:
+        "https://r.grab.com/g/6-20250915_114342_a4b79e827fb247e98e9b58389b0fa258_MEXMPS-6-CZBGBFCYCP5VAN",
+    },
+    {
+      name: "Hoco Coffee Lambhuk",
+      address: "Jl. Seulanga, Lambhuk, Kota Banda Aceh",
+      mapEmbedSrc:
+        "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3971.0429831452857!2d95.33524767396929!3d5.560647933605034!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x304037c7f88f8d1b%3A0xc33428ca5157b20!2sHoco%20Coffee%20Lambhuk!5e0!3m2!1sid!2sid!4v1757990774509!5m2!1sid!2sid",
+      wa: "https://wa.me/6281264065722",
+      gofood: "https://gofood.link/a/Mm6RDiW",
+      grabfood:
+        "https://r.grab.com/g/6-20250915_113837_a4b79e827fb247e98e9b58389b0fa258_MEXMPS-6-C4JKNPDCTFBUKA",
+    },
+    {
+      name: "Hoco Coffee Lamteumen",
+      address: "Jl. Cut Nyak Dhien, Lamteumen, Kota Banda Aceh",
+      mapEmbedSrc:
+        "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3971.22358398512!2d95.30079597396912!3d5.533818333874448!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30403bb209371edb%3A0x34f82871672f3288!2sHoco%20Coffee%20Lamteumen!5e0!3m2!1sid!2sid!4v1757990820833!5m2!1sid!2sid",
+      wa: "https://wa.me/6282375001114",
+      gofood: "https://gofood.link/a/MmcDACy",
+      grabfood:
+        "https://r.grab.com/g/6-20250915_114046_a4b79e827fb247e98e9b58389b0fa258_MEXMPS-6-C6TGCBNEBATXLT",
+    },
+  ];
+
   return (
-    <section className="py-16 bg-white text-center" id="outlets">
+    <section className="py-16 bg-white text-center" id="contact">
       <h2 className="text-2xl font-bold text-green-800 mb-8">OUR OUTLETS</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-        {[
-          {
-            name: "Hoco Coffee Lampineung",
-            address: "Jl. Malikul Saleh No.7, Kota Banda Aceh",
-            img: "/outlet1.png",
-            wa: "http://wa.me/6282288219464", // WhatsApp Lampineung
-            gofood: "https://gofood.link/a/MdJZjUY",
-            grabfood: "https://r.grab.com/g/6-20250915_114342_a4b79e827fb247e98e9b58389b0fa258_MEXMPS-6-CZBGBFCYCP5VAN",
-          },
-          {
-            name: "Hoco Coffee Lambhuk",
-            address: "Jl. Seulanga, Lambhuk, Kota Banda Aceh",
-            img: "/outlet1.png",
-            wa: "https://wa.me/6281264065722", 
-            gofood: "https://gofood.link/a/Mm6RDiW",
-            grabfood: "https://r.grab.com/g/6-20250915_113837_a4b79e827fb247e98e9b58389b0fa258_MEXMPS-6-C4JKNPDCTFBUKA", // GrabFood Lambhuk
-          },
-          {
-            name: "Hoco Coffee Lamteumen",
-            address: "Jl. Cut Nyak Dhien, Lamteumen, Kota Banda Aceh",
-            img: "/outlet1.png",
-            wa: "https://wa.me/6282375001114", // WhatsApp Lamteumen
-            gofood: "https://gofood.link/a/MmcDACy",
-            grabfood: "https://r.grab.com/g/6-20250915_114046_a4b79e827fb247e98e9b58389b0fa258_MEXMPS-6-C6TGCBNEBATXLT",
-          },
-        ].map((outlet, i) => (
+        {outlets.map((outlet, i) => (
           <div
             key={i}
-            className="bg-white shadow rounded-md overflow-hidden text-left"
+            className="bg-white shadow-lg rounded-md overflow-hidden flex flex-col"
           >
-            <img
-              src={outlet.img}
-              alt={outlet.name}
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-4">
+            {/* Map embed preview */}
+            <div className="w-full h-48">
+              {outlet.mapEmbedSrc ? (
+                <iframe
+                  src={outlet.mapEmbedSrc}
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen=""
+                  loading="lazy"
+                  title={outlet.name}
+                />
+              ) : (
+                <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                  <span className="text-gray-500">Map preview not available</span>
+                </div>
+              )}
+            </div>
+
+            {/* Info */}
+            <div className="p-4 flex-1 flex flex-col">
               <h3 className="font-bold text-lg mb-2">{outlet.name}</h3>
               <p className="text-sm text-gray-600 mb-4">{outlet.address}</p>
-              <div className="space-y-2">
+              <div className="space-y-2 mt-auto">
                 <a
                   href={outlet.wa}
                   target="_blank"

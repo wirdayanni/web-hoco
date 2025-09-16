@@ -1,7 +1,7 @@
 export default function Menu(){
   return (
     <div>
-    <section className="py-16 bg-gray-50 text-center" id="menu">
+    <section className="py-32 bg-gray-50 text-center" id="menu">
         <h2 className="text-2xl font-bold text-green-800 mb-8">
           OUR POPULAR MENU
         </h2>

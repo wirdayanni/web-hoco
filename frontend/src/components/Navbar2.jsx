@@ -39,6 +39,7 @@ export default function Navbar() {
         <Link to="/">
           <div className="flex items-center">
             <img
+              onClick={handleHomeClick}
               src={isWhiteBg ? "/logo.png" : "/logo-white.png"}
               alt="HOCO Coffee"
               className="h-10 w-auto mr-2 transition-all duration-300"
@@ -50,13 +51,6 @@ export default function Navbar() {
         <nav 
             className={`hidden md:flex items-center space-x-8 font-medium transition-colors duration-300 ${navTextColor}`}
         >
-          <button
-            onClick={handleHomeClick}
-            className="relative group text-left"
-          >
-            Home
-            <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-green-800 transition-all group-hover:w-full"></span>
-          </button>
     
           <Link to="/about" className="relative group">
             About Us

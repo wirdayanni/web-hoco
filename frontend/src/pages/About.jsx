@@ -2,7 +2,7 @@ import { Wind, Waves, Sun, Mountain, BookOpen, Car } from "lucide-react";
 
 export default function About() {
   return (
-    <section id="about" className="py-16 px-6 text-center bg-white">
+    <section id="about" className="py-24 px-6 text-center bg-white">
       {/* Title */}
       <h2 className="text-2xl font-bold text-green-800 mb-8">ABOUT US</h2>
 
