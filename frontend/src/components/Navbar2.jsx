@@ -1,4 +1,4 @@
-import { useState, useEffect, } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export default function Navbar() {
@@ -9,31 +9,24 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 40) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 40);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const handleHomeClick = () => {
     setIsOpen(false);
-
     if (location.pathname === "/") {
-      // kalau sudah di home → scroll ke hero lagi
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
-      // kalau di halaman lain → navigasi ke home
       navigate("/");
     }
-  }
+  };
 
   const isHome = location.pathname === "/";
   const isWhiteBg = isHome ? isScrolled : true;
+  const navTextColor = isHome && !isScrolled ? "text-white" : "text-green-800";
 
   return (
     <header className="fixed top-0 left-0 w-full z-50 transition-all duration-300">
@@ -53,28 +46,54 @@ export default function Navbar() {
           </div>
         </Link>
 
-        {/* Buttons */}
-        <div className="flex items-center space-x-4">
+        {/* Horizontal Menu (Desktop) */}
+        <nav 
+            className={`hidden md:flex items-center space-x-8 font-medium transition-colors duration-300 ${navTextColor}`}
+        >
+          <button
+            onClick={handleHomeClick}
+            className="relative group text-left"
+          >
+            Home
+            <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-green-800 transition-all group-hover:w-full"></span>
+          </button>
+    
+          <Link to="/about" className="relative group">
+            About Us
+            <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-green-800 transition-all group-hover:w-full"></span>
+          </Link>
+          <Link to="/menu" className="relative group">
+            Our Menu
+            <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-green-800 transition-all group-hover:w-full"></span>
+          </Link>
+          <Link to="/events" className="relative group">
+            Event & Partnership
+            <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-green-800 transition-all group-hover:w-full"></span>
+          </Link>
+          <Link to="/contact" className="relative group">
+            Contact
+            <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-green-800 transition-all group-hover:w-full"></span>
+          </Link>
           <Link
             to="/reservation"
             className="bg-green-800 text-white px-4 py-2 rounded-full hover:bg-green-700 transition"
           >
             Reservation
           </Link>
+        </nav>
 
-          {/* Hamburger Icon */}
-         <button
-            className={`text-2xl focus:outline-none transition-colors duration-300 ${
-              isWhiteBg ? "text-green-800" : "text-white"
-            }`}
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            &#9776;
-          </button>
-        </div>
+        {/* Hamburger (Mobile) */}
+        <button
+          className={`md:hidden text-2xl focus:outline-none transition-colors duration-300 ${
+            isWhiteBg ? "text-green-800" : "text-white"
+          }`}
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          &#9776;
+        </button>
       </div>
 
-     {/* Mobile Menu */}
+      {/* Mobile Menu */}
       {isOpen && (
         <nav className="fixed top-0 right-0 w-72 h-full bg-gradient-to-b from-green-900 to-green-700 text-white shadow-2xl z-50 flex flex-col p-8">
           <button
@@ -85,7 +104,6 @@ export default function Navbar() {
           </button>
 
           <div className="flex flex-col space-y-6 text-lg font-medium">
-            {/* Home pakai button biar bisa custom action */}
             <button
               onClick={handleHomeClick}
               className="relative group w-fit text-left"
@@ -93,8 +111,6 @@ export default function Navbar() {
               Home
               <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-white transition-all group-hover:w-full"></span>
             </button>
-
-            {/* Link lain tetap normal */}
             <Link
               to="/reservation"
               onClick={() => setIsOpen(false)}

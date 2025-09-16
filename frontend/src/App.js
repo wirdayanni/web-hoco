@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar.jsx";
+import Navbar from "./components/Navbar2.jsx";
 import Home from "./pages/Home.jsx";
 import Reservation from "./pages/Reservation.jsx"
 import About from "./pages/About.jsx";
@@ -8,12 +8,14 @@ import Footer from "./components/Footer.jsx";
 import MenuList from "./pages/MenuList.jsx";
 import EventList from "./pages/EventList.jsx";
 import EventDetail from "./pages/EventDetail.jsx";
+import ScrollToTop from "./components/ScrollToTop.jsx";
 
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Navbar />
-      <div className="pt-20"> {/* supaya konten tidak ketutup navbar */}
+      <div>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/reservation" element={<Reservation />} />
