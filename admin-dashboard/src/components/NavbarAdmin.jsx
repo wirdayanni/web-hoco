@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaUserCircle, FaSignOutAlt } from "react-icons/fa";
+import { FaUserCircle } from "react-icons/fa";
 
 export default function NavbarAdmin() {
   const navigate = useNavigate();

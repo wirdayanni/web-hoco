@@ -6,7 +6,14 @@ export default function EventForm({ eventData, onCancel, onSaved }) {
   const [shortDescription, setShortDescription] = useState(eventData?.shortDescription || "");
   const [description, setDescription] = useState(eventData?.description || "");
   const [date, setDate] = useState(eventData ? eventData.date.split("T")[0] : "");
-  const [locationId, setLocationId] = useState(eventData?.location?.id || "");
+
+  // Lokasi
+  const [locationId, setLocationId] = useState(
+    eventData?.location ? eventData.location.id : eventData?.customLocation ? "custom" : ""
+  );
+  const [customLocation, setCustomLocation] = useState(eventData?.customLocation || "");
+
+  // File / Gambar
   const [files, setFiles] = useState([]);
   const [locations, setLocations] = useState([]);
   const [existingImages, setExistingImages] = useState(eventData?.images || []);
@@ -27,29 +34,34 @@ export default function EventForm({ eventData, onCancel, onSaved }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
+
     formData.append("title", title);
     formData.append("shortDescription", shortDescription);
     formData.append("description", description);
     formData.append("date", date);
-    formData.append("locationId", locationId);
 
-    // gambar baru
+    if (locationId === "custom") {
+      formData.append("locationId", "custom"); // penting agar backend tahu
+      formData.append("customLocation", customLocation);
+    } else {
+      formData.append("locationId", locationId);
+    }
+
+    // Gambar baru
     for (let i = 0; i < files.length; i++) {
       formData.append("images", files[i]);
     }
 
-    // gambar lama yang masih dipertahankan
+    // Gambar lama
     const existingIds = existingImages.map((img) => img.id);
     formData.append("existingImageIds", JSON.stringify(existingIds));
 
     try {
       if (eventData) {
-        // Edit
         await axios.put(`http://localhost:5000/api/events/${eventData.id}`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
       } else {
-        // Add
         await axios.post("http://localhost:5000/api/events", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
@@ -125,7 +137,20 @@ export default function EventForm({ eventData, onCancel, onSaved }) {
             {loc.name}
           </option>
         ))}
+        <option value="custom">+ Tambah Lokasi Baru</option>
       </select>
+
+      {/* Input lokasi custom */}
+      {locationId === "custom" && (
+        <input
+          type="text"
+          placeholder="Masukkan lokasi baru"
+          value={customLocation}
+          onChange={(e) => setCustomLocation(e.target.value)}
+          className="w-full border p-2 rounded"
+          required
+        />
+      )}
 
       {/* Upload gambar baru */}
       <input

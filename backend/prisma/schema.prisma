@@ -38,6 +38,7 @@ model Event {
   status           Boolean      @default(true)
   location         Location?    @relation(fields: [locationId], references: [id])
   locationId       Int?
+  customLocation   String?      @db.VarChar(255) // lokasi bebas (di luar HOCO)
   images           EventImage[] // relation ke banyak gambar
   createdAt        DateTime     @default(now())
   updatedAt        DateTime     @updatedAt

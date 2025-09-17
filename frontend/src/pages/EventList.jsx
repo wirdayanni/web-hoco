@@ -71,7 +71,9 @@ export default function EventList() {
                   <p className="text-sm text-gray-800 line-clamp-2">
                     {event.shortDescription}
                   </p>
-                  <p className="text-sm font-medium">{event.location?.name}</p>
+                  <p className="text-sm font-medium">
+                    {event.customLocation || event.location?.name}
+                  </p>
                 </div>
               </Link>
             ))}
@@ -111,7 +113,9 @@ export default function EventList() {
                   <p className="text-sm text-gray-800 line-clamp-2">
                     {event.shortDescription}
                   </p>
-                  <p className="text-sm font-medium">{event.location?.name}</p>
+                  <p className="text-sm font-medium">
+                    {event.customLocation || event.location?.name}
+                  </p>
                 </div>
               </Link>
             ))}

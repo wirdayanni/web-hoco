@@ -4,7 +4,7 @@ import path from "path";
 
 const prisma = new PrismaClient();
 
-// 🔹 Helper untuk hapus file fisik
+//  Helper untuk hapus file fisik
 const removeFile = (urlPath) => {
   if (!urlPath) return;
   const filename = path.basename(urlPath);
@@ -12,50 +12,67 @@ const removeFile = (urlPath) => {
   if (fs.existsSync(full)) fs.unlinkSync(full);
 };
 
-// 🔹 Create Event
+// Create Event
 export const createEvent = async (req, res) => {
   try {
-    const { title, shortDescription, description, date, locationId, status } = req.body;
-    const files = req.files || [];
+    const {
+      title,
+      shortDescription,
+      description,
+      date,
+      locationId,
+      customLocation,
+      existingImageIds
+    } = req.body;
 
+    // Buat event baru
     const event = await prisma.event.create({
       data: {
         title,
         shortDescription,
         description,
         date: new Date(date),
-        status: status === undefined ? true : Boolean(status),
-        locationId: locationId ? parseInt(locationId) : undefined,
-        image: files.length ? `/uploads/${files[0].filename}` : null,
-        images: {
-          create: files.map(f => ({ url: `/uploads/${f.filename}` }))
-        }
+        locationId: locationId && locationId !== "custom" ? Number(locationId) : null,
+        customLocation: locationId === "custom" ? customLocation : null,
+        status: true,
       },
-      include: { images: true, location: true }
     });
 
-    res.status(201).json(event);
+    // Simpan gambar baru
+    if (req.files && req.files.length > 0) {
+      await prisma.eventImage.createMany({
+        data: req.files.map((file) => ({
+          url: `/uploads/${file.filename}`,
+          eventId: event.id,
+        })),
+      });
+    }
+
+    res.json(event);
   } catch (err) {
-    console.error("❌ createEvent error:", err);
-    res.status(500).json({ message: err.message });
+    console.error(err);
+    res.status(500).json({ error: "Gagal membuat event" });
   }
 };
 
-// 🔹 Get All Events
+// Get All Events
 export const getEvents = async (req, res) => {
   try {
     const events = await prisma.event.findMany({
-      orderBy: { date: "desc" },
-      include: { images: true, location: true }
+      include: {
+        location: true,
+        images: true,
+      },
+      orderBy: { date: "asc" },
     });
     res.json(events);
   } catch (err) {
-    console.error("❌ getEvents error:", err);
-    res.status(500).json({ message: err.message });
+    console.error(err);
+    res.status(500).json({ error: "Gagal mengambil data event" });
   }
 };
 
-// 🔹 Get Event by ID
+// Get Event by ID
 export const getEventById = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
@@ -66,69 +83,74 @@ export const getEventById = async (req, res) => {
     if (!event) return res.status(404).json({ message: "Event not found" });
     res.json(event);
   } catch (err) {
-    console.error("❌ getEventById error:", err);
+    console.error("getEventById error:", err);
     res.status(500).json({ message: err.message });
   }
 };
 
-// 🔹 Update Event
+// Update Event
 export const updateEvent = async (req, res) => {
   try {
-    const id = parseInt(req.params.id);
-    const { title, shortDescription, description, date, locationId, status, existingImageIds } = req.body;
+    const { id } = req.params;
+    const {
+      title,
+      shortDescription,
+      description,
+      date,
+      locationId,
+      customLocation,
+      existingImageIds
+    } = req.body;
 
-    let keepImages = [];
-    if (existingImageIds) {
-      try { keepImages = JSON.parse(existingImageIds); } catch { keepImages = []; }
-    }
-
-    const currentImages = await prisma.eventImage.findMany({ where: { eventId: id } });
-    for (const img of currentImages) {
-      if (!keepImages.includes(img.id)) {
-        removeFile(img.url);
-        await prisma.eventImage.delete({ where: { id: img.id } });
-      }
-    }
-
-    const files = req.files || [];
-    const newImagesData = files.map(f => ({ url: `/uploads/${f.filename}`, eventId: id }));
-
-    const updatedEvent = await prisma.event.update({
-      where: { id },
+    // Update event
+    const event = await prisma.event.update({
+      where: { id: Number(id) },
       data: {
         title,
         shortDescription,
         description,
-        date: date ? new Date(date) : undefined,
-        locationId: locationId ? parseInt(locationId) : undefined,
-        status: status !== undefined ? Boolean(status) : undefined,
-        image: files.length ? `/uploads/${files[0].filename}` : undefined
-      }
+        date: new Date(date),
+        locationId: locationId && locationId !== "custom" ? Number(locationId) : null,
+        customLocation: locationId === "custom" ? customLocation : null,
+      },
     });
 
-    if (newImagesData.length) {
-      await prisma.eventImage.createMany({ data: newImagesData });
+    // Gambar lama yg masih dipertahankan
+    if (existingImageIds) {
+      const keepIds = JSON.parse(existingImageIds);
+      await prisma.eventImage.deleteMany({
+        where: {
+          eventId: Number(id),
+          id: { notIn: keepIds },
+        },
+      });
     }
 
-    const fresh = await prisma.event.findUnique({
-      where: { id },
-      include: { images: true, location: true }
-    });
+    // Tambah gambar baru
+    if (req.files && req.files.length > 0) {
+      await prisma.eventImage.createMany({
+        data: req.files.map((file) => ({
+          url: `/uploads/${file.filename}`,
+          eventId: event.id,
+        })),
+      });
+    }
 
-    res.json(fresh);
+    res.json(event);
   } catch (err) {
-    console.error("❌ updateEvent error:", err);
-    res.status(500).json({ message: err.message });
+    console.error(err);
+    res.status(500).json({ error: "Gagal update event" });
   }
 };
 
-// 🔹 Delete Event
+// Delete Event
 export const deleteEvent = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
     const event = await prisma.event.findUnique({ where: { id }, include: { images: true } });
     if (!event) return res.status(404).json({ message: "Event not found" });
 
+    // hapus file fisik gambar
     for (const img of event.images) removeFile(img.url);
 
     await prisma.eventImage.deleteMany({ where: { eventId: id } });
@@ -136,7 +158,7 @@ export const deleteEvent = async (req, res) => {
 
     res.json({ message: "Event deleted" });
   } catch (err) {
-    console.error("❌ deleteEvent error:", err);
+    console.error("deleteEvent error:", err);
     res.status(500).json({ message: err.message });
   }
 };

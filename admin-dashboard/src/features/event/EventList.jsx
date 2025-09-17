@@ -3,26 +3,19 @@ import axios from "axios";
 
 export default function EventList({ onAdd, onEdit }) {
   const [events, setEvents] = useState([]);
-  const [locations, setLocations] = useState([]);
 
   useEffect(() => {
     fetchEvents();
-    fetchLocations();
   }, []);
 
   const fetchEvents = async () => {
     try {
       const res = await axios.get("http://localhost:5000/api/events");
-      setEvents(res.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const fetchLocations = async () => {
-    try {
-      const res = await axios.get("http://localhost:5000/api/locations");
-      setLocations(res.data);
+      // urutkan descending berdasarkan tanggal
+      const sorted = res.data.sort(
+        (a, b) => new Date(b.date) - new Date(a.date)
+      );
+      setEvents(sorted);
     } catch (err) {
       console.error(err);
     }
@@ -82,7 +75,9 @@ export default function EventList({ onAdd, onEdit }) {
               <td className="p-2 border">{event.title}</td>
               <td className="p-2 border">{getDayName(event.date)}</td>
               <td className="p-2 border">{formatDate(event.date)}</td>
-              <td className="p-2 border">{event.location?.name || "-"}</td>
+              <td className="p-2 border">
+                {event.customLocation || event.location?.name || "-"}
+              </td>
               <td className="p-2 border">
                 {event.images[0] && (
                   <img

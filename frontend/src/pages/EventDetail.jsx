@@ -20,29 +20,45 @@ export default function EventDetail() {
 
   if (!event) return <p className="p-6">Loading...</p>;
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("id-ID", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
   return (
-    <div className="p-6 space-y-4">
+    <div className="p-10 space-y-4 mt-20">
       <Link to="/events" className="text-green-700 underline">
         ← Kembali ke daftar event
       </Link>
 
       <h1 className="text-2xl font-bold text-green-800">{event.title}</h1>
       <p className="text-sm text-gray-600">
-        {new Date(event.date).toLocaleDateString()} - {event.location?.name}
+        {formatDate(event.date)} •{" "}
+        {event.customLocation || event.location?.name}
       </p>
       <p className="text-gray-800 whitespace-pre-line">{event.description}</p>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-        {event.images.map((img, idx) => (
-          <div key={idx} className="w-full aspect-[3/4] overflow-hidden rounded">
-            <img
-              src={`http://localhost:5000${img.url}`}
-              alt={`${event.title}-${idx}`}
-              className="w-full h-full object-cover"
-            />
-          </div>
-        ))}
-      </div>
+      {event.images?.length > 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+          {event.images.map((img, idx) => (
+            <div
+              key={idx}
+              className="w-full aspect-[3/4] overflow-hidden rounded"
+            >
+              <img
+                src={`http://localhost:5000${img.url}`}
+                alt={`${event.title}-${idx}`}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
