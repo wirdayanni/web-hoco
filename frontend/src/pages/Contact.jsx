@@ -36,7 +36,7 @@ export default function Contact() {
 
   // Gunakan React Icons
   const socials = [
-    { name: "Instagram", url: "https://instagram.com/hococoffee", icon: <FaInstagram /> },
+    { name: "Instagram", url: "https://instagram.com/hoco.coffee", icon: <FaInstagram /> },
     { name: "TikTok", url: "https://tiktok.com/@hococoffee", icon: <FaTiktok /> },
     { name: "Facebook", url: "https://facebook.com/hococoffee", icon: <FaFacebook /> },
   ];
