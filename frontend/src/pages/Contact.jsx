@@ -38,7 +38,7 @@ export default function Contact() {
   const socials = [
     { name: "Instagram", url: "https://instagram.com/hoco.coffee", icon: <FaInstagram /> },
     { name: "TikTok", url: "https://tiktok.com/@hococoffee", icon: <FaTiktok /> },
-    { name: "Facebook", url: "https://facebook.com/hococoffee", icon: <FaFacebook /> },
+    { name: "Facebook", url: "https://www.facebook.com/profile.php?id=100068043493400&mibextid=rS40aB7S9Ucbxw6v", icon: <FaFacebook /> },
   ];
 
   return (

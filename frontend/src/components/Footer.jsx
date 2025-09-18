@@ -43,7 +43,7 @@ export default function Footer() {
           <h3 className="text-lg font-semibold mb-4">Follow Us</h3>
           <div className="flex justify-center md:justify-end space-x-5">
             <a
-              href="https://instagram.com/hococoffee"
+              href="https://instagram.com/hoco.coffee"
               target="_blank"
               rel="noopener noreferrer"
             >
